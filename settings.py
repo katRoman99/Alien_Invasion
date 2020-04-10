@@ -5,4 +5,4 @@ class Settings():
         ''' Init of game settings '''
         self.screen_width = 1200
         self.screen_heigth = 800
-        self.bg_color = (200, 200, 200)
+        self.bg_color = (120, 220, 255)
