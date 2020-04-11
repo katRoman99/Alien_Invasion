@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from bullet import Bullet
+from alien import Alien
 
 def update_bullets(bullets):
     ''' 
@@ -33,6 +34,8 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         ship.moving_down = True
     elif event.key == pygame.K_SPACE:
         fire_bullet(ai_settings, screen, ship, bullets)
+    elif event.key == pygame.K_q:
+        sys.exit()
 
 def check_keyup_events(event, ship):
     if event.key == pygame.K_RIGHT:
@@ -54,7 +57,25 @@ def check_events(ai_settings, screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
-def update_screen(ai_settings, screen, ship, bullets):
+def debug_aliens(aliens, screen):
+    for alien in aliens:
+        pygame.draw.rect(screen, (200, 200, 200), alien.rect)
+
+def create_fleet(ai_settings, screen, aliens):
+    ''' Create the whole fleet of aliens '''
+    alien = Alien(ai_settings, screen)
+    alien_width = alien.rect.width
+    available_space_x = ai_settings.screen_width - 2*alien_width
+    number_aliens_x = int(available_space_x/(2*alien_width))
+
+    # Create the first row of aliens
+    for alien_number in range(number_aliens_x):
+        alien = Alien(ai_settings, screen)
+        alien.x_pos = alien_width + 2*alien_width*alien_number
+        alien.rect.x = alien.x_pos
+        aliens.add(alien)
+
+def update_screen(ai_settings, screen, ship, aliens, bullets):
     ''' Update images displayed on the screen and move to the next screen '''
     # Refresh the screen for each new iteration of the game loop
     screen.blit(ai_settings.bg_image, screen.get_rect())
@@ -62,6 +83,8 @@ def update_screen(ai_settings, screen, ship, bullets):
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitme()
+    aliens.draw(screen)
+    # debug_aliens(aliens, screen)
 
     # Displaye the last modified screen
     pygame.display.flip()
