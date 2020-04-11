@@ -10,7 +10,7 @@ def run_game():
     # Game init plus object creation
     pygame.init()
     ai_settings = Settings()
-    screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_heigth))
+    screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien invasion")
 
     ship = Ship(ai_settings, screen)
@@ -18,7 +18,7 @@ def run_game():
     aliens = Group()
     
     # Create a fleet of aliens
-    gf.create_fleet(ai_settings, screen, aliens)
+    gf.create_fleet(ai_settings, screen, ship, aliens)
 
     # Begin game's main loop
     while True:

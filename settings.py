@@ -7,7 +7,7 @@ class Settings():
         ''' Init of game settings '''
         # Screen settings
         self.screen_width = 1200
-        self.screen_heigth = 800
+        self.screen_height = 800
         self.bg_color = (120, 220, 255)
         self.bg_image = pygame.image.load('images/space_bg.bmp')
 
