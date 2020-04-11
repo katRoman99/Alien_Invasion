@@ -18,3 +18,5 @@ class Settings():
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = 253, 182, 75
+
+        self.bullets_allowed
