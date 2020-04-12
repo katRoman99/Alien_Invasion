@@ -92,6 +92,24 @@ def create_fleet(ai_settings, screen, ship, aliens):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
 
+def check_fleet_edges(ai_settings, aliens):
+    ''' Invoke proper action when an alien reaches the edge of the screen '''
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+
+def change_fleet_direction(ai_settings, aliens):
+    ''' Move the whole fleet down and change the direction in which it moves '''
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
+
+def update_aliens(ai_settings, aliens):
+    ''' Update the position of all aliens in the fleet '''
+    check_fleet_edges(ai_settings, aliens)
+    aliens.update()
+
 def update_screen(ai_settings, screen, ship, aliens, bullets):
     ''' Update images displayed on the screen and move to the next screen '''
     # Refresh the screen for each new iteration of the game loop
