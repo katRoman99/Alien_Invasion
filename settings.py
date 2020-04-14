@@ -26,3 +26,5 @@ class Settings():
 
         # Direction 1 = right , -1 = left
         self.fleet_direction = 1
+
+        self.ship_limit = 3

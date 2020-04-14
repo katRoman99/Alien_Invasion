@@ -14,11 +14,11 @@ class Ship():
 
         # Each new spaceship will show up in the center of the screen
         self.rect.centerx = self.screen_rect.centerx
-        self.rect.centery = self.screen_rect.centery
+        self.rect.bottom = self.screen_rect.bottom
         # self.rect.bottom = self.screen_rect.bottom
 
         self.x_pos = float(self.rect.centerx)
-        self.y_pos = float(self.rect.centery)
+        self.y_pos = float(self.rect.bottom)
 
         # Ship's moving right flag
         self.moving_right = False
@@ -38,8 +38,13 @@ class Ship():
             self.y_pos += self.ai_settings.ship_speed_factor
 
         self.rect.centerx = self.x_pos
-        self.rect.centery = self.y_pos
+        self.rect.bottom = self.y_pos
 
     def blitme(self):
         ''' Displaying the ship in a current location '''
         self.screen.blit(self.image, self.rect)
+
+    def center_ship(self):
+        self.center = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
+        self.y_pos = float(self.rect.bottom)
