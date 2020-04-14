@@ -5,7 +5,7 @@ import pygame
 from bullet import Bullet
 from alien import Alien
 
-def update_bullets(bullets):
+def update_bullets(ai_settings, screen, ship, aliens, bullets):
     ''' 
     Update position of the bullets on the screen and those outside
     of the screen.
@@ -15,6 +15,19 @@ def update_bullets(bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+
+    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+
+def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+    """ Check collisions between aliens and bullets """
+
+    # Check collissions
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+    # Check if any aliens are left in the fleet, if not create a new fleet
+    if len(aliens) == 0:
+        bullets.empty()
+        create_fleet(ai_settings, screen, ship, aliens)
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):
@@ -105,10 +118,13 @@ def change_fleet_direction(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings, ship, aliens):
     ''' Update the position of all aliens in the fleet '''
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    if pygame.sprite.spritecollideany(ship, aliens):
+        print("")
 
 def update_screen(ai_settings, screen, ship, aliens, bullets):
     ''' Update images displayed on the screen and move to the next screen '''
