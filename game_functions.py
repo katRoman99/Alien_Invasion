@@ -8,15 +8,18 @@ from alien import Alien
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     """ Response to the ship being hit by an alien and vice versa """
-    stats.ships_left -= 1
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
 
-    aliens.empty()
-    bullets.empty()
+        aliens.empty()
+        bullets.empty()
 
-    create_fleet(ai_settings, screen, ship, aliens)
-    ship.center_ship()
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
 
-    sleep(0.5)
+        sleep(0.5)
+    else:
+        stats.game_active = False
 
 def update_bullets(ai_settings, screen, ship, aliens, bullets):
     ''' 
@@ -82,6 +85,16 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+
+
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    """ Check whether alien(s) reached the bottom of the screen """
+    screen_rect = screen.get_rect()
+
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen.rect.bottom:
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break
 
 def debug_aliens(aliens, screen):
     for alien in aliens:
