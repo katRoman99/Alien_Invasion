@@ -1,14 +1,16 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
 
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings, screen, ship_width, ship_height):
         ''' Init of the spaceship and its location on the screen '''
+        super().__init__()
         self.ai_settings = ai_settings
         self.screen = screen
         
         # Loading the ship image and its rect
-        self.image = pygame.transform.smoothscale(pygame.image.load('images/ship3.bmp'), (85, 120))
+        self.transform_ship(ship_width, ship_height)
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -48,3 +50,7 @@ class Ship():
         self.center = self.screen_rect.centerx
         self.rect.bottom = self.screen_rect.bottom
         self.y_pos = float(self.rect.bottom)
+
+    def transform_ship(self, width, height):
+        """ Tranform ship image to smaller/ bigger size """
+        self.image = pygame.transform.smoothscale(pygame.image.load('images/ship3.bmp'), (width, height))
