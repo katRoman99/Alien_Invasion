@@ -36,7 +36,7 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         pygame.mouse.set_visible(True)
         stats.game_active = False
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     ''' 
     Update position of the bullets on the screen and those outside
     of the screen.
@@ -47,13 +47,17 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """ Check collisions between aliens and bullets """
 
     # Check collissions
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+            sb.prep_score()
 
     # Check if any aliens are left in the fleet, if not create a new fleet
     if len(aliens) == 0:
@@ -181,7 +185,7 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
 
     check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     ''' Update images displayed on the screen and move to the next screen '''
     # Refresh the screen for each new iteration of the game loop
     screen.blit(ai_settings.bg_image, screen.get_rect())
@@ -191,6 +195,8 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
     ship.blitme()
     aliens.draw(screen)
     # debug_aliens(aliens, screen)
+
+    sb.show_score()
 
     if not stats.game_active:
         play_button.draw_button()
