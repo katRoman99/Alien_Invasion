@@ -11,20 +11,30 @@ class Settings():
         self.bg_color = (120, 220, 255)
         self.bg_image = pygame.image.load('images/space_bg.bmp')
 
-        # Ship and bullet settings
-        self.ship_speed_factor = 1.5
-
-        self.bullet_speed_factor = 2
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = 253, 182, 75
 
         self.bullets_allowed = 3
 
-        self.alien_speed_factor = 1
         self.fleet_drop_speed = 10
 
+        self.ship_limit = 3
+
+        self.speedup_scale = 1.1
+
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        """ Init of the game's dynamic properties """
+        self.ship_speed_factor = 1.5
+        self.bullet_speed_factor = 2.5
+        self.alien_speed_factor = 1
         # Direction 1 = right , -1 = left
         self.fleet_direction = 1
 
-        self.ship_limit = 3
+    def increase_speed(self):
+        """ Change the properties connected with speed """
+        self.ship_speed_factor *= self.speedup_scale
+        self.bullet_speed_factor *= self.speedup_scale
+        self.alien_speed_factor *= self.speedup_scale

@@ -9,6 +9,7 @@ from alien import Alien
 def start_game(ai_settings, stats, screen, ship, aliens, bullets):
     """ Starts the game when game or g button pressed """
     if not stats.game_active:
+        ai_settings.initialize_dynamic_settings()
         stats.reset_stats()
         stats.game_active = True
 
@@ -57,6 +58,7 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
     # Check if any aliens are left in the fleet, if not create a new fleet
     if len(aliens) == 0:
         bullets.empty()
+        ai_settings.increase_speed()
         create_fleet(ai_settings, screen, ship, aliens)
 
 
